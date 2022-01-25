@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<head>
+    <title>Мур-Мур. Регистрация</title>
+</head>
+<body>
+    <p>Пожалуйста, заполните анкету:</p>
+    <form action="" method="post" enctype="multipart/form-data">
+        {% csrf_token %}  
+        <p><label for="{{ form.avatar.id_for_label }}">Аватарка: </label>{{ form.avatar }}</p>
+        <p><label for="{{ form.gender.id_for_label }}">Пол: </label>{{ form.gender }}</p>        
+        <p><label for="{{ form.first_name.id_for_label }}">Имя: </label>{{ form.first_name }}</p>        
+        <p><label for="{{ form.last_name.id_for_label }}">Фамилия: </label>{{ form.last_name }}</p>
+        <p><label for="{{ form.email.id_for_label }}">Email: </label>{{ form.email }}</p>
+        <p><label for="{{ form.password1.id_for_label }}">Пароль: </label>{{ form.password1 }}</p>
+        <p><label for="{{ form.password2.id_for_label }}">Пароль (еще раз): </label>{{ form.password2 }}</p>
+        <input type="submit" value="Создать анкету">
+  </form>
+</body>
