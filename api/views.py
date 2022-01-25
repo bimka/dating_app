@@ -25,7 +25,6 @@ class ClientCreateView(View):
             print('%s: %s' % (key, value) )
         for key, value in request.POST.items():
             print('%s: %s' % (key, value) )
-        print(dir(form))
         if not form.is_valid():
             #context = {'form': form}
             #return render(request, self.template_name, context)
