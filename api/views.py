@@ -1,6 +1,5 @@
-from PIL import Image
+from io import BytesIO
 
-from urllib import request
 from django.shortcuts import render, redirect
 from django.views import View
 from django.http import HttpResponse
@@ -22,24 +21,22 @@ class ClientCreateView(View):
     def post(self, request):
         form = ClientCreateForm(request.POST, request.FILES)
         for key, value in request.FILES.items():
-            print('%s: %s' % (key, value) )
+            print('%s: %s' % (key, type(value)) )
         for key, value in request.POST.items():
             print('%s: %s' % (key, value) )
         if not form.is_valid():
-            #context = {'form': form}
-            #return render(request, self.template_name, context)
+            context = {'form': form}
+            return render(request, self.template_name, context)
             return HttpResponse('Client does not created!')
-        """if form.image:
-            return HttpResponse('form.image is')
-            im = Image.open(form.image)
-            im.thumbnail((220, 130), Image.ANTIALIAS)
-            thumb_io = BytesIO()
-            im.save(thumb_io, im.format, quality=60)
-            instance.image.save(im.filename, ContentFile(thumb_io.getvalue()), save=False)"""
-        c = form.save(commit=False)
-        c.avatar = watermark_avatar(input_avatar_path = request.FILES['avatar'])
-        c.save()
-
+        
+        # Add watermark on the avatar
+        instance = form.save(commit=False)
+        im = watermark_avatar(instance.avatar)
+        thumb_io = BytesIO()
+        im.save(thumb_io, im.format, quality=60)
+        instance.avatar.save(request.FILES['avatar'].name, ContentFile(thumb_io.getvalue()), save=False)
+        instance.save()
+                
         return HttpResponse('New client is registred')
 
 
